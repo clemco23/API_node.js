@@ -1,5 +1,7 @@
+const e = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -66,4 +68,32 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const loginUser = await User.findOne({ email });
+        if (!loginUser) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }   
+        const isMatch = await bcrypt.compare(password, loginUser.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        const token = jwt.sign(
+            { userId: loginUser._id, role: loginUser.role }, 
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_ExPIRES_IN }
+        );
+        res.status(200).json({ loginUser,token, message: 'Login successful' });
+        res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.logoutUser = (req, res) => {
+    // Since JWT is stateless, logout can be handled on the client side by deleting the token.
+    res.status(200).json({ message: 'Logout successful' });
+}
  
