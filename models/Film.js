@@ -14,9 +14,12 @@ const filmSchema = new mongoose.Schema({
         type: Number,   
         required: true
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,   
-        ref: 'User',
+    pictures: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
         required: true
     },
     categorie: {
