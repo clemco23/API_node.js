@@ -63,6 +63,9 @@ exports.deleteUser = async (req, res) => {
         if (!deleteUser) {
             return res.status(404).json({ message: 'User not found' });
         }
+        if (!req.user || (req.user.role !== 'admin' && req.user.userId !== req.params.id)) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
         res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });

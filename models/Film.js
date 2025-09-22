@@ -3,7 +3,7 @@ const filmSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
+
     },
     director: {
         type: String,
@@ -20,7 +20,7 @@ const filmSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     categorie: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,8 +30,10 @@ const filmSchema = new mongoose.Schema({
     rating: {
         type: Number,
         min: 0,
-        max: 10
-    }
+        max: 10,
+        required: false
+    },
+     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Film', filmSchema);

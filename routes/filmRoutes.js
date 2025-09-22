@@ -5,7 +5,8 @@ const verifyToken = require('../middlewares/verifyToken');
 
 //routes Privées
 router.get('/', verifyToken, filmController.getAllFilms);
+router.get('/:id', verifyToken, filmController.getFilmById);
+router.post('/', verifyToken, filmController.createFilm);
 
-// router.get('/', filmController.getAllFilms);
 
 module.exports = router;
