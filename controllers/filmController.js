@@ -68,3 +68,22 @@ exports.updateFilm = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+exports.deleteFilm = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }   
+    try {
+        const film = await Film.findById(req.params.id);
+        if (!film) {
+            return res.status(404).json({ message: 'Film not found' });
+        }
+        if (film.user.toString() !== req.user.userId) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        await film.deleteOne();
+        res.status(200).json({ message: 'Film deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
