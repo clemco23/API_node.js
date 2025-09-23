@@ -33,3 +33,22 @@ exports.addFavori = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+exports.removeFavori = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    try {
+        const favori = await favoris.findById(req.params.id);
+        if (!favori) {
+            return res.status(404).json({ message: 'Favori not found' });
+        }
+        if (favori.user.toString() !== req.user.userId) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        await favori.deleteOne();
+        res.status(200).json({ message: 'Favori removed successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }   
+};
