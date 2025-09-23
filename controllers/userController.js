@@ -43,6 +43,9 @@ exports.updateUser = async (req, res) => {
         if (updates.password) {
             updates.password = await bcrypt.hash(updates.password, 10);
         }
+        if (!req.user || (req.user.role !== 'admin' && req.user.userId !== req.params.id)) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
         const updateUser = await User.findByIdAndUpdate(
             req.params.id, 
             req.body, 
@@ -59,7 +62,10 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        const deleteUser = await User.findByIdAndDelete(req.params.id);   
+        const deleteUser = await User.findByIdAndDelete(req.params.id);
+        if (!req.user || (req.user.role !== 'admin' && req.user.userId !== req.params.id)) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
         if (!deleteUser) {
             return res.status(404).json({ message: 'User not found' });
         }
