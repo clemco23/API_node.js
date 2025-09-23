@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
 const filmRoutes = require('./routes/filmRoutes');
+const favoriRoutes = require('./routes/favoriRoutes');
 
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/films', filmRoutes);
+app.use('/api/favoris', favoriRoutes);
 // app.use('/api/users/:id', userRoutes);
 
 app.get('/', (req, res) => {

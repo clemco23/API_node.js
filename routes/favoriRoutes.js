@@ -6,3 +6,5 @@ const verifyToken = require('../middlewares/verifyToken');
 //routes Privées
 router.get('/', verifyToken, favoriController.getAllFavoris);
 router.post('/', verifyToken, favoriController.addFavori);
+
+module.exports = router;
