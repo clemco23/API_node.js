@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors'); 
 
 const userRoutes = require('./routes/userRoutes');
-const filmRoutes = require('./routes/filmRoutes');
-const favoriRoutes = require('./routes/favoriRoutes');
+const filmRoutes = require('./routes/filmsRoutes/filmRoutes');
+const favoriRoutes = require('./routes/filmsRoutes/favoriRoutes');
 
 
 const app = express();

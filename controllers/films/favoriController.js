@@ -1,4 +1,4 @@
-const favoris = require('../models/Favoris');
+const favoris = require('../../models/filmsModels/Favoris');
 const jwt = require('jsonwebtoken');
 
 exports.getAllFavoris = async (req, res) => {

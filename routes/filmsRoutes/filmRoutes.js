@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); 
-const filmController = require('../controllers/filmController');
-const verifyToken = require('../middlewares/verifyToken');
+const filmController = require('../../controllers/films/filmController');
+const verifyToken = require('../../middlewares/verifyToken');
 
 //routes Privées
 router.get('/', verifyToken, filmController.getAllFilms);

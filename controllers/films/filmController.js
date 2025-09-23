@@ -1,4 +1,4 @@
-const Film = require('../models/Film');
+const Film = require('../../models/filmsModels/Film');
 const jwt = require('jsonwebtoken');
 
 exports.getAllFilms = async (req, res) => {
