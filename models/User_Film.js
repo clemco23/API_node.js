@@ -14,8 +14,6 @@ const User_FilmSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },  
-    favorite: {
-        type: Boolean,
-        default: false
-    }
 }, { timestamps: true });
+
+module.exports = mongoose.model('User_Film', User_FilmSchema); 
