@@ -34,3 +34,5 @@ router.delete('/:id', verifyToken, userController.deleteUser);
 
 
 module.exports = router;
+
+

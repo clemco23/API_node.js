@@ -112,7 +112,7 @@ exports.logoutUser = async (req, res) => {
     }
 }
 
-// 📸 Upload photo de profil
+// Upload photo de profil
 exports.uploadPhoto = async (req, res) => {
     try {
         const userId = req.params.id;
