@@ -117,25 +117,25 @@ exports.uploadPhoto = async (req, res) => {
     try {
         const userId = req.params.id;
 
-        // Vérifie qu’un fichier a bien été envoyé
+        
         if (!req.file) {
             return res.status(400).json({ message: 'Aucune image envoyée' });
         }
 
         const photoPath = `/uploads/${req.file.filename}`;
 
-        // Trouver l'utilisateur
+       
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
 
-        // Supprimer l'ancienne photo si elle existe
+        
         if (user.photo && fs.existsSync(path.join(__dirname, '..', user.photo))) {
             fs.unlinkSync(path.join(__dirname, '..', user.photo));
         }
 
-        // Mettre à jour la photo
+        
         user.photo = photoPath;
         await user.save();
 
