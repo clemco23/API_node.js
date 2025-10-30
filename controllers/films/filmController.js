@@ -2,6 +2,7 @@ const Film = require('../../models/filmsModels/Film');
 const jwt = require('jsonwebtoken');
 
 exports.getAllFilms = async (req, res) => {
+
     if (!req.user) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -33,6 +34,12 @@ exports.createFilm = async (req, res) => {
         return res.status(403).json({ message: 'Forbidden' });
     }
 
+    // Vérifie si un fichier a été uploadé
+    let picturesPath = null;
+    if (req.file) {
+      picturesPath = `/uploads/${req.file.filename}`;
+    }
+
     const { title, director, releaseYear, pictures, description, rating, categorie, watched } = req.body;
 
     if (!title || !director || !releaseYear || !pictures || !categorie) {
@@ -56,12 +63,12 @@ exports.createFilm = async (req, res) => {
         return res.status(400).json({ message: 'Release year must be between 1800 and the current year' });
     }
 
-    if (
-        pictures &&
-        !/^(https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)(\?.*)?|.+\.(jpg|jpeg|png|webp|avif|gif|svg))$/.test(pictures)
-    ) {
-        return res.status(400).json({ message: 'Pictures must be a valid image URL or filename (jpg, png, etc.)' });
-    }
+    // if (
+    //     pictures &&
+    //     !/^(https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)(\?.*)?|.+\.(jpg|jpeg|png|webp|avif|gif|svg))$/.test(pictures)
+    // ) {
+    //     return res.status(400).json({ message: 'Pictures must be a valid image URL or filename (jpg, png, etc.)' });
+    // }
 
     try {
         const newFilm = new Film({

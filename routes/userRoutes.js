@@ -18,12 +18,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 📸 Route pour uploader une photo de profil
-router.post('/:id/photo', upload.single('photo'), userController.uploadPhoto);
+
+// router.post('/:id/photo', upload.single('photo'), userController.uploadPhoto);
+
 
 
 //routes Publiques
-router.post('/', userController.createUser);
+// router.post('/', userController.createUser);
+router.post('/', upload.single('photo'), userController.createUser);
 router.post('/login', userController.loginUser);
 
 //routes Privées

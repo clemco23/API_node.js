@@ -28,16 +28,51 @@ exports.getUserById = async (req, res) => {
     }   
 };
 
+// exports.createUser = async (req, res) => {
+//  try {
+//         const { name, nickname, email, password, photo } = req.body;
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         const newUser = new User({ name, nickname, email, password: hashedPassword, photo });
+//         User.photo = photoPath;
+//         await newUser.save();
+//         res.status(201).json(newUser, { message: 'User created successfully' });
+//     } catch (error) {
+//         res.status(400).json({ error: error.message });
+//     }
+// };
+
 exports.createUser = async (req, res) => {
- try {
-        const { name, nickname, email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ name, nickname, email, password: hashedPassword });
-        await newUser.save();
-        res.status(201).json(newUser, { message: 'User created successfully' });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+  try {
+    const { name, nickname, email, password } = req.body;
+
+    // Vérifie si un fichier a été uploadé
+    let photoPath = null;
+    if (req.file) {
+      photoPath = `/uploads/${req.file.filename}`;
     }
+
+    // Hash du mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Création du nouvel utilisateur
+    const newUser = new User({
+      name,
+      nickname,
+      email,
+      password: hashedPassword,
+      photo: photoPath
+    });
+
+    await newUser.save();
+
+    res.status(201).json({
+      user: newUser,
+      message: 'User created successfully'
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
 };
 
 exports.updateUser = async (req, res) => {
@@ -113,41 +148,41 @@ exports.logoutUser = async (req, res) => {
 }
 
 // Upload photo de profil
-exports.uploadPhoto = async (req, res) => {
-    try {
-        const userId = req.params.id;
+// exports.uploadPhoto = async (req, res) => {
+//     try {
+//         const userId = req.params.id;
 
         
-        if (!req.file) {
-            return res.status(400).json({ message: 'Aucune image envoyée' });
-        }
+//         if (!req.file) {
+//             return res.status(400).json({ message: 'Aucune image envoyée' });
+//         }
 
-        const photoPath = `/uploads/${req.file.filename}`;
+//         const photoPath = `/uploads/${req.file.filename}`;
 
        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé' });
-        }
+//         const user = await User.findById(userId);
+//         if (!user) {
+//             return res.status(404).json({ message: 'Utilisateur non trouvé' });
+//         }
 
         
-        if (user.photo && fs.existsSync(path.join(__dirname, '..', user.photo))) {
-            fs.unlinkSync(path.join(__dirname, '..', user.photo));
-        }
+//         if (user.photo && fs.existsSync(path.join(__dirname, '..', user.photo))) {
+//             fs.unlinkSync(path.join(__dirname, '..', user.photo));
+//         }
 
         
-        user.photo = photoPath;
-        await user.save();
+//         user.photo = photoPath;
+//         await user.save();
 
-        res.status(200).json({
-            message: 'Photo de profil mise à jour avec succès',
-            photo: user.photo,
-            user
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
-    }
-};
+//         res.status(200).json({
+//             message: 'Photo de profil mise à jour avec succès',
+//             photo: user.photo,
+//             user
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
  
